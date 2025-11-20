@@ -26,7 +26,7 @@
             <td>{{ c.estudiante.user.get_full_name }}</td>
             <td>{{ c.periodo }}</td>
             <td>{{ c.nota }}</td>
-            <td>{{ c.docente.user.get_full_name if c.docente }}</td>
+            <td>{% if c.docente %}{{ c.docente.user.get_full_name }}{% else %}-{% endif %}</td>
         </tr>
         {% empty %}
         <tr><td colspan="4">No hay calificaciones registradas.</td></tr>

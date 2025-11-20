@@ -2,51 +2,70 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h3>Dashboard</h3>
+<div class="page-surface">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <p class="text-muted mb-1">Resumen general</p>
+            <h3 class="mb-0">Dashboard</h3>
+        </div>
+    </div>
 
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-bg-primary mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Estudiantes</h5>
-                <p class="card-text fs-3">{{ total_estudiantes }}</p>
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card text-bg-primary">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase small mb-1">Estudiantes</h6>
+                    <p class="card-text fs-3 mb-0">{{ total_estudiantes }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-bg-success">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase small mb-1">Docentes</h6>
+                    <p class="card-text fs-3 mb-0">{{ total_docentes }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-bg-warning">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase small mb-1">Cursos</h6>
+                    <p class="card-text fs-3 mb-0">{{ total_cursos }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-bg-info">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase small mb-1">Materias</h6>
+                    <p class="card-text fs-3 mb-0">{{ total_materias }}</p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-bg-success mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Docentes</h5>
-                <p class="card-text fs-3">{{ total_docentes }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-bg-warning mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Cursos</h5>
-                <p class="card-text fs-3">{{ total_cursos }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-bg-info mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Materias</h5>
-                <p class="card-text fs-3">{{ total_materias }}</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-6">
-        <h5>Promedio por curso</h5>
-        <canvas id="chartPromedioCurso"></canvas>
-    </div>
-    <div class="col-md-6">
-        <h5>Asistencia del mes por estado</h5>
-        <canvas id="chartAsistencia"></canvas>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">Promedio por curso</h6>
+                    <div class="chart-holder">
+                        <canvas id="chartPromedioCurso"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">Asistencia del mes por estado</h6>
+                    <div class="chart-holder">
+                        <canvas id="chartAsistencia"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -54,6 +73,11 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+Chart.defaults.color = "rgba(231, 237, 246, 0.82)";
+Chart.defaults.font.family = "Manrope, system-ui, -apple-system, sans-serif";
+Chart.defaults.plugins.legend.labels.boxWidth = 14;
+Chart.defaults.plugins.legend.labels.color = "rgba(231, 237, 246, 0.8)";
+
 const cursosLabels = [
     {% for item in promedio_por_curso %}
         "{{ item.materia__curso__nombre }}",
@@ -73,11 +97,25 @@ new Chart(ctx1, {
         datasets: [{
             label: 'Promedio',
             data: cursosData,
+            backgroundColor: "rgba(0, 180, 216, 0.7)",
+            borderColor: "rgba(93, 228, 255, 0.9)",
+            borderWidth: 1.5,
+            borderRadius: 8,
         }]
     },
     options: {
+        maintainAspectRatio: false,
         scales: {
-            y: { beginAtZero: true, max: 10 }
+            y: {
+                beginAtZero: true,
+                max: 10,
+                grid: { color: "rgba(255,255,255,0.06)" },
+                ticks: { color: "rgba(231, 237, 246, 0.7)" }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: "rgba(231, 237, 246, 0.7)" }
+            }
         }
     }
 });
@@ -94,11 +132,26 @@ const asistenciaData = [
 ];
 
 const ctx2 = document.getElementById('chartAsistencia').getContext('2d');
+const palette = ["#38bdf8", "#22c55e", "#f59e0b", "#ef4444", "#a855f7"];
+const colors = asistenciaData.map((_, idx) => palette[idx % palette.length]);
 new Chart(ctx2, {
     type: 'pie',
     data: {
         labels: asistenciaLabels,
-        datasets: [{ data: asistenciaData }]
+        datasets: [{
+            data: asistenciaData,
+            backgroundColor: colors,
+            borderColor: "rgba(255,255,255,0.8)",
+            borderWidth: 1
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top'
+            }
+        }
     }
 });
 </script>

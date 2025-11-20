@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Bienvenido{% endblock %}
 {% block content %}
-<div class="text-center">
-    <h1>Bienvenido al Sistema de Gestión Académica</h1>
-    <p><a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-3">Iniciar sesión</a></p>
+<div class="page-surface text-center">
+    <h1 class="mb-3">Bienvenido al Sistema de Gestión Académica</h1>
+    <p class="lead text-muted">Administra cursos, calificaciones y asistencia desde una sola plataforma.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-3 px-4">Iniciar sesión</a>
 </div>
 {% endblock %}
