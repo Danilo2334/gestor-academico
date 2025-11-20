@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Eliminar calificación{% endblock %}
+{% block content %}
+<h3>¿Eliminar calificación?</h3>
+<p>{{ calificacion.estudiante.user.get_full_name }} - {{ calificacion.materia.nombre }} ({{ calificacion.periodo }})</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Sí, eliminar</button>
+    <a href="{% url 'calificacion_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

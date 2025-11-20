@@ -1,0 +1,28 @@
+﻿{% extends "base.html" %}
+{% block title %}Mi asistencia{% endblock %}
+{% block content %}
+<h3>Mi asistencia</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Curso</th>
+            <th>Materia</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in asistencias %}
+        <tr>
+            <td>{{ a.fecha }}</td>
+            <td>{{ a.materia.curso.nombre }}</td>
+            <td>{{ a.materia.nombre }}</td>
+            <td>{{ a.get_estado_display }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay registros de asistencia.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

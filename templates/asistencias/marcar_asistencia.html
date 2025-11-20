@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Marcar asistencia{% endblock %}
+{% block content %}
+<h3>Marcar asistencia - {{ materia.nombre }} ({{ materia.curso.nombre }})</h3>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" class="form-control" value="{{ fecha }}">
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Estudiante</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for est in estudiantes %}
+            <tr>
+                <td>{{ est.user.get_full_name }}</td>
+                <td>
+                    <select name="estado_{{ est.id }}" class="form-select">
+                        <option value="P">Presente</option>
+                        <option value="A">Ausente</option>
+                        <option value="T">Tarde</option>
+                        <option value="J">Justificado</option>
+                    </select>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2">No hay estudiantes matriculados en el curso de esta materia.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Guardar asistencia</button>
+</form>
+{% endblock %}

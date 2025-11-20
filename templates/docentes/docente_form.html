@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Docente{% endblock %}
+{% block content %}
+<h3>{% if form.instance.pk %}Editar{% else %}Nuevo{% endif %} docente</h3>
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.username.label_tag }} {{ form.username }}
+            {{ form.first_name.label_tag }} {{ form.first_name }}
+            {{ form.last_name.label_tag }} {{ form.last_name }}
+            {{ form.email.label_tag }} {{ form.email }}
+        </div>
+        <div class="col-md-6">
+            {{ form.titulo.label_tag }} {{ form.titulo }}
+            {{ form.telefono.label_tag }} {{ form.telefono }}
+        </div>
+    </div>
+    <button class="btn btn-primary mt-3" type="submit">Guardar</button>
+</form>
+{% endblock %}

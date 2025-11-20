@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Eliminar asistencia{% endblock %}
+{% block content %}
+<h3>¿Eliminar registro de asistencia?</h3>
+<p>{{ asistencia.estudiante.user.get_full_name }} - {{ asistencia.materia.nombre }} - {{ asistencia.fecha }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Sí, eliminar</button>
+    <a href="{% url 'asistencia_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

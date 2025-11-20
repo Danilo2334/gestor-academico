@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+{% block title %}Mis calificaciones{% endblock %}
+{% block content %}
+<h3>Mis calificaciones</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Curso</th>
+            <th>Materia</th>
+            <th>Periodo</th>
+            <th>Nota</th>
+            <th>Docente</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in calificaciones %}
+        <tr>
+            <td>{{ c.materia.curso.nombre }}</td>
+            <td>{{ c.materia.nombre }}</td>
+            <td>{{ c.periodo }}</td>
+            <td>{{ c.nota }}</td>
+            <td>{% if c.docente %}{{ c.docente.user.get_full_name }}{% else %}-{% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Aún no tienes calificaciones registradas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

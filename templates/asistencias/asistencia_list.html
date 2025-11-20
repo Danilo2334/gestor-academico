@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Asistencia{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Asistencia</h3>
+    <div>
+        <a href="{% url 'asistencia_excel' %}" class="btn btn-outline-secondary me-2">Exportar Excel</a>
+        <a href="{% url 'asistencia_create' %}" class="btn btn-success">Nueva asistencia</a>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Estudiante</th>
+            <th>Curso</th>
+            <th>Materia</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in asistencias %}
+        <tr>
+            <td>{{ a.fecha }}</td>
+            <td>{{ a.estudiante.user.get_full_name }}</td>
+            <td>{{ a.materia.curso.nombre }}</td>
+            <td>{{ a.materia.nombre }}</td>
+            <td>{{ a.get_estado_display }}</td>
+            <td>
+                <a href="{% url 'asistencia_delete' a.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No hay registros de asistencia.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

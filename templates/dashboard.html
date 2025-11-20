@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h3>Dashboard</h3>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Estudiantes</h5>
+                <p class="card-text fs-3">{{ total_estudiantes }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Docentes</h5>
+                <p class="card-text fs-3">{{ total_docentes }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Cursos</h5>
+                <p class="card-text fs-3">{{ total_cursos }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Materias</h5>
+                <p class="card-text fs-3">{{ total_materias }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h5>Promedio por curso</h5>
+        <canvas id="chartPromedioCurso"></canvas>
+    </div>
+    <div class="col-md-6">
+        <h5>Asistencia del mes por estado</h5>
+        <canvas id="chartAsistencia"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const cursosLabels = [
+    {% for item in promedio_por_curso %}
+        "{{ item.materia__curso__nombre }}",
+    {% endfor %}
+];
+const cursosData = [
+    {% for item in promedio_por_curso %}
+        {{ item.promedio|floatformat:2 }},
+    {% endfor %}
+];
+
+const ctx1 = document.getElementById('chartPromedioCurso').getContext('2d');
+new Chart(ctx1, {
+    type: 'bar',
+    data: {
+        labels: cursosLabels,
+        datasets: [{
+            label: 'Promedio',
+            data: cursosData,
+        }]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true, max: 10 }
+        }
+    }
+});
+
+const asistenciaLabels = [
+    {% for item in asistencia_mes %}
+        "{{ item.estado }}",
+    {% endfor %}
+];
+const asistenciaData = [
+    {% for item in asistencia_mes %}
+        {{ item.total }},
+    {% endfor %}
+];
+
+const ctx2 = document.getElementById('chartAsistencia').getContext('2d');
+new Chart(ctx2, {
+    type: 'pie',
+    data: {
+        labels: asistenciaLabels,
+        datasets: [{ data: asistenciaData }]
+    }
+});
+</script>
+{% endblock %}

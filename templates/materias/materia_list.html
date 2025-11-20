@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Materias{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Materias</h3>
+    <a href="{% url 'materia_create' %}" class="btn btn-success">Nueva materia</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Código</th>
+            <th>Curso</th>
+            <th>Docente</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in materias %}
+        <tr>
+            <td>{{ m.nombre }}</td>
+            <td>{{ m.codigo }}</td>
+            <td>{{ m.curso.nombre }}</td>
+            <td>{% if m.docente %}{{ m.docente.user.get_full_name }}{% else %}-{% endif %}</td>
+            <td>
+                <a href="{% url 'materia_update' m.pk %}" class="btn btn-sm btn-primary">Editar</a>
+                <a href="{% url 'materia_delete' m.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                <a href="{% url 'marcar_asistencia' m.pk %}" class="btn btn-sm btn-outline-secondary">Marcar asistencia</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No hay materias registradas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

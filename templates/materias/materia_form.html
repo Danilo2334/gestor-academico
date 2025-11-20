@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Materia{% endblock %}
+{% block content %}
+<h3>{% if form.instance.pk %}Editar{% else %}Nueva{% endif %} materia</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Guardar</button>
+</form>
+{% endblock %}

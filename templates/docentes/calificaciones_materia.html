@@ -1,0 +1,36 @@
+﻿{% extends "base.html" %}
+{% block title %}Calificaciones - {{ materia.nombre }}{% endblock %}
+{% block content %}
+<h3>Calificaciones - {{ materia.nombre }} ({{ materia.curso.nombre }})</h3>
+
+<h5>Registrar nueva calificación</h5>
+<form method="post" class="mb-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Guardar</button>
+</form>
+
+<h5>Listado de calificaciones</h5>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Estudiante</th>
+            <th>Periodo</th>
+            <th>Nota</th>
+            <th>Docente</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in calificaciones %}
+        <tr>
+            <td>{{ c.estudiante.user.get_full_name }}</td>
+            <td>{{ c.periodo }}</td>
+            <td>{{ c.nota }}</td>
+            <td>{{ c.docente.user.get_full_name if c.docente }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay calificaciones registradas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

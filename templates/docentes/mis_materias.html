@@ -1,0 +1,33 @@
+﻿{% extends "base.html" %}
+{% block title %}Mis materias{% endblock %}
+{% block content %}
+<h3>Mis materias</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Materia</th>
+            <th>Curso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in materias %}
+        <tr>
+            <td>{{ m.nombre }}</td>
+            <td>{{ m.curso.nombre }}</td>
+            <td>
+                <a href="{% url 'docente_calificaciones_materia' m.id %}" class="btn btn-sm btn-primary">
+                    Calificaciones
+                </a>
+                <a href="{% url 'marcar_asistencia' m.id %}" class="btn btn-sm btn-secondary">
+                    Marcar asistencia
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No tienes materias asignadas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
